@@ -1,0 +1,9 @@
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\bin\Debug\Browser.exe.config
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\bin\Debug\Browser.exe
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\bin\Debug\Browser.pdb
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.Properties.Resources.resources
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.Form1.resources
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.csproj.GenerateResource.Cache
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.csproj.CoreCompileInputs.cache
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.exe
+C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.pdb
