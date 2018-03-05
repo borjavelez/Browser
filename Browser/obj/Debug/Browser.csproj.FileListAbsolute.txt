@@ -7,3 +7,13 @@ C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\o
 C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.csproj.CoreCompileInputs.cache
 C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.exe
 C:\Users\borja\OneDrive\documentos\visual studio 2017\Projects\Browser\Browser\obj\Debug\Browser.pdb
+C:\Users\borja\Desktop\Browser\Browser\bin\Debug\Browser.exe.config
+C:\Users\borja\Desktop\Browser\Browser\bin\Debug\Browser.exe
+C:\Users\borja\Desktop\Browser\Browser\bin\Debug\Browser.pdb
+C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.csprojResolveAssemblyReference.cache
+C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.Properties.Resources.resources
+C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.Form1.resources
+C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.csproj.GenerateResource.Cache
+C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.csproj.CoreCompileInputs.cache
+C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.exe
+C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.pdb

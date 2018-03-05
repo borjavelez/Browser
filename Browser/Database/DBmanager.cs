@@ -31,7 +31,7 @@ namespace Browser.Database
             {
                 cn = new SqlConnection();
                 String dbFileName = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName + "\\Database\\BrowserDB.mdf";
-                cn.ConnectionString = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = '" + dbFileName + "'; Integrated Security = True;";
+                cn.ConnectionString = "Data Source = (LocalDB)\\MSSQLLocalDB; AttachDbFilename = '" + dbFileName + "'; Integrated Security = True; MultipleActiveResultSets=true;";
                 cn.Open();
                 return true;
             }
@@ -143,6 +143,96 @@ namespace Browser.Database
                 dr.Close();
                 MessageBox.Show(ex.Message);
                 return false;
+            }
+        }
+
+        public List<String> searchTerm(String input)
+        {
+            List<String> result = new List<String>();
+
+            int id = getTermId(input);
+            if (id == 0)
+            {
+                result.Add("No results found");
+                return result;
+            }
+            else
+            {
+                List<int> result2 = new List<int>();
+                result2 = getDocsFromTermId(id);
+                return getDocsFromDocId(result2);
+            }
+        }
+
+        public int getTermId(String input)
+        {
+            try
+            {
+                //Get the id of the received term
+                int id;
+                String query = "SELECT Id FROM Term WHERE value='" + input + "'";
+                cmd = new SqlCommand(query, cn);
+                id = (int)cmd.ExecuteScalar();
+                return id;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
+        }
+
+        public List<int> getDocsFromTermId(int id)
+        {
+            List<int> result = new List<int>();
+            try
+            {
+                //Get the docs linked to the received term
+                String query = "SELECT doc_id FROM Term_Doc WHERE term_id=" + id;
+                cmd = new SqlCommand(query, cn);
+                using (dr = cmd.ExecuteReader())
+                {
+                    while (dr.Read())
+                    {
+                        result.Add(dr.GetInt32(0));
+                    }
+                    //dr.Close();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //dr.Close();
+                result.Add(0);
+                return result;
+            }
+        }
+
+        public List<String> getDocsFromDocId(List<int> doc_ids)
+        {
+            List<String> result = new List<String>();
+            try
+            {
+                foreach (int i in doc_ids)
+                {
+                    //Get the docs linked to the received id
+                    String query = "SELECT url FROM Doc WHERE Id=" + i;
+                    cmd = new SqlCommand(query, cn);
+                    using (dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            result.Add(dr.GetString(0));
+                        }
+                        //dr.Close();
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //dr.Close();
+                result.Add("No results found");
+                return result;
             }
         }
 

@@ -64,14 +64,15 @@ namespace Browser.Utilities
                 if (db.checkTermValue(word) == 0)
                 {
                     db.insertIntoTerm(word);
+                    if (db.checkDocUrl(url) != 0)
+                    {
+                        db.insertIntoTerm_Doc(db.checkTermValue(word), db.checkDocUrl(url));
+                    } else
+                    {
+                        db.insertIntoDoc(url, "txt");
+                        db.insertIntoTerm_Doc(db.checkTermValue(word), db.checkDocUrl(url));
+                    }
                 }
-
-                if (db.checkDocUrl(url) == 0)
-                {
-                    db.insertIntoDoc(url, "txt");
-                }
-
-                db.insertIntoTerm_Doc(db.checkTermValue(word), db.checkDocUrl(url));
                 return true;
             } catch (Exception ex)
             {

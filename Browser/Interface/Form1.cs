@@ -18,7 +18,7 @@ namespace Browser
         {
             InitializeComponent();
             splitContainer1.Top = 200;
-            this.Size = new Size(1000, 600);
+            splitContainer1.Left = (this.ClientSize.Width - splitContainer1.Width) / 2;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -29,9 +29,26 @@ namespace Browser
         private void button1_Click(object sender, EventArgs e)
         {
             splitContainer1.Top = 10;
-            this.Size = new Size(1000, 800);
+            //this.Height = 800;
             Crawler cr = new Crawler();
             cr.indexFilesAndDirectories();
+
+            DBmanager db = new DBmanager();
+
+            List<String> searchResult = db.searchTerm(textBox1.Text);
+
+            listBox1.DataSource = searchResult;
+            listBox1.Visible = true;
+
+
+        }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                button1_Click((object)sender, (EventArgs)e);
+            }
         }
     }
 }
