@@ -60,7 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Database\DBmanager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interface\Form1.cs">
@@ -96,10 +95,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Database\BrowserDB.ldf">
-      <DependentUpon>BrowserDB.mdf</DependentUpon>
-    </Content>
-    <Content Include="Database\BrowserDB.mdf" />
     <Content Include="Internal\Thesaurus.txt" />
   </ItemGroup>
   <ItemGroup>

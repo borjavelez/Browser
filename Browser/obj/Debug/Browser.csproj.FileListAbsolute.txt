@@ -17,3 +17,13 @@ C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.csproj.GenerateResource
 C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.csproj.CoreCompileInputs.cache
 C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.exe
 C:\Users\borja\Desktop\Browser\Browser\obj\Debug\Browser.pdb
+C:\Users\Ruben\Desktop\Browser\Browser\bin\Debug\Browser.exe.config
+C:\Users\Ruben\Desktop\Browser\Browser\bin\Debug\Browser.exe
+C:\Users\Ruben\Desktop\Browser\Browser\bin\Debug\Browser.pdb
+C:\Users\Ruben\Desktop\Browser\Browser\obj\Debug\Browser.csprojResolveAssemblyReference.cache
+C:\Users\Ruben\Desktop\Browser\Browser\obj\Debug\Browser.Properties.Resources.resources
+C:\Users\Ruben\Desktop\Browser\Browser\obj\Debug\Browser.Form1.resources
+C:\Users\Ruben\Desktop\Browser\Browser\obj\Debug\Browser.csproj.GenerateResource.Cache
+C:\Users\Ruben\Desktop\Browser\Browser\obj\Debug\Browser.csproj.CoreCompileInputs.cache
+C:\Users\Ruben\Desktop\Browser\Browser\obj\Debug\Browser.exe
+C:\Users\Ruben\Desktop\Browser\Browser\obj\Debug\Browser.pdb

@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Browser.Database;
 using Browser.Utilities;
 
 namespace Browser
@@ -33,11 +32,9 @@ namespace Browser
             Crawler cr = new Crawler();
             cr.indexFilesAndDirectories();
 
-            DBmanager db = new DBmanager();
+            //SEARCH TERM AND RETURN LIST<STRING> searchResult
 
-            List<String> searchResult = db.searchTerm(textBox1.Text);
-
-            listBox1.DataSource = searchResult;
+            //listBox1.DataSource = searchResult;
             listBox1.Visible = true;
 
 
