@@ -19,29 +19,17 @@ namespace Browser.Utilities
 
         List<String> words = new List<string>();
 
-        /* Esta propiedad es opcional porque no sería imprescindible saber desde el instante 0
-         cuántos balanceradores de carga hay en el sistema. Se puede realizar una petición asíncrona
-         para averiguarlo y si CURRENT_NUM_LOAD_BALANCERS es nulo en el instante de hacer peticiones POST para
-         almacenar las palabras, se puede utilizar en su lugar DEFAULT_NUM_LOAD_BALANCERS */
         private static int? CURRENT_NUM_LOAD_BALANCERS;
 
-        /* Si el patrón por defecto tuviese que modificarse,
-        * sería necesario actualizar todas las apps de escritorio.
-        * Se supone que debe conocerse este patrón desde el principio y 
-        * sin posibilidad de modificación */
-        private static readonly string DEFAULT_URI_LOAD_BALANCERS = "https://Xloadbalancerbrowserapi.azurewebsites.net/api/postDataToApi";
+        private static readonly string DEFAULT_URI_LOAD_BALANCERS = "https://X------------.azurewebsites.net/api/postDataToApi";
 
-        /*Como mínimo el sistema va a contar con 2 balanceadores de carga*/
         private static readonly int DEFAULT_NUM_LOAD_BALANCERS = 2;
 
-        /* Esta lista contiene las URLs de todos los balanceadores de carga disponibles en el sistema.
-         La idea sería que se actualizase periódicamente al menos antes de leer un documento y compruebe el 
-         estado de CURRENT_NUM_LOAD_BALANCERS*/
         private static List<string> LOAD_BALANCERS_LIST = new List<string>();
 
+        private static readonly string URL_GET_NUMBER_BALANCERS_COMPONENT = "https://-------------.azurewebsites.net/api/GetNumLoadBalancers";
 
-        private static readonly string URL_GET_NUMBER_BALANCERS_COMPONENT = "https://browserapinumloadbal.azurewebsites.net/api/GetNumLoadBalancers";
-
+        private static readonly string URL_MONITOR = "http://---------------.azurewebsites.net/api/LogMonitors";
 
         List<String> thesaurus;
 
@@ -84,7 +72,7 @@ namespace Browser.Utilities
                     }
 
                     //Send terms to balancer via POST
-                    postWordsToLoadBalancers();
+                    postWordsToLoadBalancers(path);
                 }
             }
 
@@ -99,8 +87,6 @@ namespace Browser.Utilities
             return list; 
         }
 
-
-        // Este método debe ser llamado antes de indexar un documento.
         private void updateLoadBalancersListAsync()
         {
             try
@@ -119,9 +105,6 @@ namespace Browser.Utilities
             }
         }
 
-        /*Este es un método asíncrono de tipo Task que devolverá el número 
-         * actual de balanceadores del sistema mediante una petición GET a 
-         una FunctionApp desplegada en Microsft Azure*/
         private async Task<int> GetNumLoadBalancersAsync()
         {
             var _httpClient = new HttpClient();
@@ -133,20 +116,20 @@ namespace Browser.Utilities
             }
         }
 
-        private void postWordsToLoadBalancers()
+        private void postWordsToLoadBalancers(string path)
         {
             for (int i = 0; i < words.Count; i++)
             {
-                Post(LOAD_BALANCERS_LIST.ElementAt(i % CURRENT_NUM_LOAD_BALANCERS.Value), words.ElementAt(i)).ConfigureAwait(false);
+                Post(LOAD_BALANCERS_LIST.ElementAt(i % CURRENT_NUM_LOAD_BALANCERS.Value), words.ElementAt(i), path).ConfigureAwait(false);
 
             }
 
         }
 
-        public static async Task Post(string urlBalancer, string postData)
+        public static async Task Post(string urlBalancer, string value, string path)
         {
 
-            string str = "{\"term\": \"" + postData + "\"}";
+            string str = "{\"Value\":\"" + value + "\",\"Path\":\"" + path + "\",\"Time\":\"" + DateTime.Now.TimeOfDay.ToString() + "\"}";
 
             _httpClient.DefaultRequestHeaders
              .Accept
@@ -164,8 +147,30 @@ namespace Browser.Utilities
                 {
                     // Something wrong happened
                     string resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    // ... post to Monitor
+                    // Send log to monitor
+                    await SendLog(resultContent);
                 }
+            }
+        }
+
+
+        public static async Task SendLog(string postData)
+        {
+            string str = "{\"Origin\":\"Desktop application\",\"Time\":\""+ DateTime.Now.TimeOfDay.ToString()+ "\",\"Message\":\"sample string 4\"} ";
+
+            _httpClient.DefaultRequestHeaders
+             .Accept
+             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // Put method with error handling
+            using (var content = new StringContent(str, Encoding.UTF8, "application/json"))
+            {
+                var result = await _httpClient.PostAsync($"{URL_MONITOR}", content).ConfigureAwait(false);
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    return;
+                }
+                
             }
         }
     }
