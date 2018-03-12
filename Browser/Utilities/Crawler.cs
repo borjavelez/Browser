@@ -21,15 +21,15 @@ namespace Browser.Utilities
 
         private static int? CURRENT_NUM_LOAD_BALANCERS;
 
-        private static readonly string DEFAULT_URI_LOAD_BALANCERS = "https://X------------.azurewebsites.net/api/postDataToApi";
+        private static readonly string DEFAULT_URI_LOAD_BALANCERS = "https://Xloadbalancerbrowserapi.azurewebsites.net/api/postDataToApi";
 
         private static readonly int DEFAULT_NUM_LOAD_BALANCERS = 2;
 
         private static List<string> LOAD_BALANCERS_LIST = new List<string>();
 
-        private static readonly string URL_GET_NUMBER_BALANCERS_COMPONENT = "https://-------------.azurewebsites.net/api/GetNumLoadBalancers";
+        private static readonly string URL_GET_NUMBER_BALANCERS_COMPONENT = "https://browserapinumloadbal.azurewebsites.net/api/GetNumLoadBalancers";
 
-        private static readonly string URL_MONITOR = "http://---------------.azurewebsites.net/api/LogMonitors";
+        private static readonly string URL_MONITOR = "http://monitorapi20180312064914.azurewebsites.net/api/LogMonitors";
 
         List<String> thesaurus;
 
@@ -70,6 +70,7 @@ namespace Browser.Utilities
                         }
 
                     }
+
 
                     //Send terms to balancer via POST
                     postWordsToLoadBalancers(path);
@@ -128,8 +129,9 @@ namespace Browser.Utilities
 
         public static async Task Post(string urlBalancer, string value, string path)
         {
+            string finalPath = path.Replace("\\", "/");
 
-            string str = "{\"Value\":\"" + value + "\",\"Path\":\"" + path + "\",\"Time\":\"" + DateTime.Now.TimeOfDay.ToString() + "\"}";
+            string str = "{\"Value\":\"" + value + "\",\"Path\":\"" + finalPath + "\"}";
 
             _httpClient.DefaultRequestHeaders
              .Accept
@@ -147,6 +149,7 @@ namespace Browser.Utilities
                 {
                     // Something wrong happened
                     string resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    //resultContent = URLEncoder.encode(resultCo, "UTF-8");
                     // Send log to monitor
                     await SendLog(resultContent);
                 }
@@ -156,7 +159,7 @@ namespace Browser.Utilities
 
         public static async Task SendLog(string postData)
         {
-            string str = "{\"Origin\":\"Desktop application\",\"Time\":\""+ DateTime.Now.TimeOfDay.ToString()+ "\",\"Message\":\"sample string 4\"} ";
+            string str = "{\"Origin\":\"Desktop application\",\"Time\":\""+ DateTime.Now.TimeOfDay.ToString()+ "\",\"Message\":\""+postData + "\"} ";
 
             _httpClient.DefaultRequestHeaders
              .Accept

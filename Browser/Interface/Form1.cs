@@ -31,7 +31,7 @@ namespace Browser
             //this.Height = 800;
             Crawler cr = new Crawler();
           
-            //cr.indexFilesAndDirectories();
+            cr.indexFilesAndDirectories();
 
             //SEARCH TERM AND RETURN LIST<STRING> searchResult
 
