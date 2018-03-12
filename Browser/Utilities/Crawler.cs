@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -174,6 +175,35 @@ namespace Browser.Utilities
                 }
                 
             }
+        }
+
+        public List<String> selectValue(string value)
+        {
+            List<String> result = new List<String>();
+            SqlConnection conn = new SqlConnection("Data Source=termsdbapi.database.windows.net;Initial Catalog=TermDB;User ID=browseradmin;Password=Admin123");
+            conn.Open();
+
+            using (SqlCommand command = new SqlCommand("Select Path from Terms where Value='" + value + "'", conn))
+            {
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetString(0));
+                    }
+                }
+            }
+
+            conn.Close();
+            if (result.Count() > 0)
+            {
+                return result;
+            } else
+            {
+                result.Add("No results found");
+                return result;
+            }
+            conn.Close();
         }
     }
 }
