@@ -122,7 +122,6 @@ namespace Browser.Utilities
             for (int i = 0; i < words.Count; i++)
             {
                 Post(LOAD_BALANCERS_LIST.ElementAt(i % CURRENT_NUM_LOAD_BALANCERS.Value), words.ElementAt(i), path).ConfigureAwait(false);
-
             }
 
         }
@@ -148,7 +147,7 @@ namespace Browser.Utilities
                 else
                 {
                     // Something wrong happened
-                    string resultContent = await result.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    string resultContent = result.ReasonPhrase;
                     //resultContent = URLEncoder.encode(resultCo, "UTF-8");
                     // Send log to monitor
                     await SendLog(resultContent);
