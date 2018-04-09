@@ -22,21 +22,23 @@ namespace Browser.Utilities
 
         private static int? CURRENT_NUM_LOAD_BALANCERS;
 
-        private static readonly string DEFAULT_URI_LOAD_BALANCERS = "https://Xloadbalancerbrowserapi.azurewebsites.net/api/postDataToApi";
+        //private static readonly string DEFAULT_URI_LOAD_BALANCERS = "https://Xloadbalancerbrowserapi.azurewebsites.net/api/postDataToApi";
+        private static readonly string DEFAULT_URI_LOAD_BALANCERS = "http://localhost:7071/api/LoadBalancer";
 
-        private static readonly int DEFAULT_NUM_LOAD_BALANCERS = 2;
+        private static readonly int DEFAULT_NUM_LOAD_BALANCERS = 1;
 
-        private static List<string> LOAD_BALANCERS_LIST = new List<string>();
+        //private static List<string> LOAD_BALANCERS_LIST = new List<string>();
 
-        private static readonly string URL_GET_NUMBER_BALANCERS_COMPONENT = "https://browserapinumloadbal.azurewebsites.net/api/GetNumLoadBalancers";
+        //private static readonly string URL_GET_NUMBER_BALANCERS_COMPONENT = "https://browserapinumloadbal.azurewebsites.net/api/GetNumLoadBalancers";
 
-        private static readonly string URL_MONITOR = "http://monitorapi20180312064914.azurewebsites.net/api/LogMonitors";
+        private static readonly string URL_MONITOR = "http://localhost:5128/api/LogMonitors";
 
         List<String> thesaurus;
 
         public Crawler()
         {
-            updateLoadBalancersListAsync();
+            //updateLoadBalancersListAsync();
+            //Post(DEFAULT_URI_LOAD_BALANCERS, "DekstopApp", "Test");
         }
 
 
@@ -89,40 +91,41 @@ namespace Browser.Utilities
             return list; 
         }
 
-        private void updateLoadBalancersListAsync()
-        {
-            try
-            {
-                CURRENT_NUM_LOAD_BALANCERS = GetNumLoadBalancersAsync().Result;
-            }
-            catch
-            {
-                CURRENT_NUM_LOAD_BALANCERS = DEFAULT_NUM_LOAD_BALANCERS;
-            }
+        //private void updateLoadBalancersListAsync()
+        //{
+        //    try
+        //    {
+        //        CURRENT_NUM_LOAD_BALANCERS = GetNumLoadBalancersAsync().Result;
+        //    }
+        //    catch
+        //    {
+        //        CURRENT_NUM_LOAD_BALANCERS = DEFAULT_NUM_LOAD_BALANCERS;
+        //    }
 
-            for (int i = 1; i <= CURRENT_NUM_LOAD_BALANCERS; i++)
-            {
-                string url = DEFAULT_URI_LOAD_BALANCERS.Replace("X", i.ToString());
-                LOAD_BALANCERS_LIST.Add(url);
-            }
-        }
+        //    for (int i = 1; i <= CURRENT_NUM_LOAD_BALANCERS; i++)
+        //    {
+        //        string url = DEFAULT_URI_LOAD_BALANCERS.Replace("X", i.ToString());
+        //        LOAD_BALANCERS_LIST.Add(url);
+        //    }
+        //}
 
-        private async Task<int> GetNumLoadBalancersAsync()
-        {
-            var _httpClient = new HttpClient();
+        //private async Task<int> GetNumLoadBalancersAsync()
+        //{
+        //    var _httpClient = new HttpClient();
 
-            using (var result = await _httpClient.GetAsync(URL_GET_NUMBER_BALANCERS_COMPONENT).ConfigureAwait(false))
-            {
-                string content = await result.Content.ReadAsStringAsync();
-                return int.Parse(content);
-            }
-        }
+        //    using (var result = await _httpClient.GetAsync(URL_GET_NUMBER_BALANCERS_COMPONENT).ConfigureAwait(false))
+        //    {
+        //        string content = await result.Content.ReadAsStringAsync();
+        //        return int.Parse(content);
+        //    }
+        //}
 
         private void postWordsToLoadBalancers(string path)
         {
             for (int i = 0; i < words.Count; i++)
             {
-                Post(LOAD_BALANCERS_LIST.ElementAt(i % CURRENT_NUM_LOAD_BALANCERS.Value), words.ElementAt(i), path).ConfigureAwait(false);
+                Post(DEFAULT_URI_LOAD_BALANCERS, words.ElementAt(i), path);
+                //Post(LOAD_BALANCERS_LIST.ElementAt(i % CURRENT_NUM_LOAD_BALANCERS.Value), words.ElementAt(i), path).ConfigureAwait(false);
             }
 
         }
@@ -151,31 +154,32 @@ namespace Browser.Utilities
                     string resultContent = result.ReasonPhrase;
                     //resultContent = URLEncoder.encode(resultCo, "UTF-8");
                     // Send log to monitor
-                    await SendLog(resultContent);
+
+                    //await SendLog(resultContent);
                 }
             }
         }
 
 
-        public static async Task SendLog(string postData)
-        {
-            string str = "{\"Origin\":\"Desktop application\",\"Time\":\""+ DateTime.Now.TimeOfDay.ToString()+ "\",\"Message\":\""+postData + "\"} ";
+        //public static async Task SendLog(string postData)
+        //{
+        //    string str = "{\"Origin\":\"Desktop application\",\"Time\":\""+ DateTime.Now.TimeOfDay.ToString()+ "\",\"Message\":\""+postData + "\"} ";
 
-            _httpClient.DefaultRequestHeaders
-             .Accept
-             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //    _httpClient.DefaultRequestHeaders
+        //     .Accept
+        //     .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            // Put method with error handling
-            using (var content = new StringContent(str, Encoding.UTF8, "application/json"))
-            {
-                var result = await _httpClient.PostAsync($"{URL_MONITOR}", content).ConfigureAwait(false);
-                if (result.StatusCode == HttpStatusCode.OK)
-                {
-                    return;
-                }
+        //    // Put method with error handling
+        //    using (var content = new StringContent(str, Encoding.UTF8, "application/json"))
+        //    {
+        //        var result = await _httpClient.PostAsync($"{URL_MONITOR}", content).ConfigureAwait(false);
+        //        if (result.StatusCode == HttpStatusCode.OK)
+        //        {
+        //            return;
+        //        }
                 
-            }
-        }
+        //    }
+        //}
 
         public List<String> selectValue(string value)
         {
