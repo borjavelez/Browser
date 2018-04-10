@@ -32,10 +32,9 @@ namespace Browser
             Crawler cr = new Crawler();
 
             cr.indexFilesAndDirectories();
-            
+
 
             //SEARCH TERM AND RETURN LIST<STRING> searchResult
-
             listBox1.DataSource = cr.selectValue(textBox1.Text);
             listBox1.Visible = true;
 

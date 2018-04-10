@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -80,6 +81,13 @@ namespace Browser.Utilities
                 }
             }
 
+        }
+
+        public void sendLogTest()
+        {
+            SendLog("Overlapping test: Started");
+            Thread.Sleep(10000);
+            SendLog("Overlapping test: Finished");
         }
 
         public List<string> readThesaurus()
@@ -161,25 +169,25 @@ namespace Browser.Utilities
         }
 
 
-        //public static async Task SendLog(string postData)
-        //{
-        //    string str = "{\"Origin\":\"Desktop application\",\"Time\":\""+ DateTime.Now.TimeOfDay.ToString()+ "\",\"Message\":\""+postData + "\"} ";
+        public static async Task SendLog(string postData)
+        {
+            string str = "{\"Origin\":\"Desktop application\",\"Time\":\"" + DateTime.Now.TimeOfDay.ToString() + "\",\"Message\":\"" + postData + "\"} ";
 
-        //    _httpClient.DefaultRequestHeaders
-        //     .Accept
-        //     .Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders
+             .Accept
+             .Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        //    // Put method with error handling
-        //    using (var content = new StringContent(str, Encoding.UTF8, "application/json"))
-        //    {
-        //        var result = await _httpClient.PostAsync($"{URL_MONITOR}", content).ConfigureAwait(false);
-        //        if (result.StatusCode == HttpStatusCode.OK)
-        //        {
-        //            return;
-        //        }
-                
-        //    }
-        //}
+            // Put method with error handling
+            using (var content = new StringContent(str, Encoding.UTF8, "application/json"))
+            {
+                var result = await _httpClient.PostAsync($"{URL_MONITOR}", content).ConfigureAwait(false);
+                if (result.StatusCode == HttpStatusCode.OK)
+                {
+                    return;
+                }
+
+            }
+        }
 
         public List<String> selectValue(string value)
         {
