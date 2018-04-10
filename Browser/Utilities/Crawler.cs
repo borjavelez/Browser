@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
@@ -11,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Utilities;
 
 namespace Browser.Utilities
 {
@@ -189,33 +191,34 @@ namespace Browser.Utilities
             }
         }
 
-        public List<String> selectValue(string value)
+        public class RootObject
         {
+            public int Id { get; set; }
+            public string Value { get; set; }
+            public string Path { get; set; }
+            public string Time { get; set; }
+        }
+
+        public List<String> selectValue(String text)
+        {
+            String json = new WebClient().DownloadString("http://localhost:7303/api/Terms?Value=" + text);
+            var model = JsonConvert.DeserializeObject<List<RootObject>>(json);
+
             List<String> result = new List<String>();
-            SqlConnection conn = new SqlConnection("Data Source=termsdbapi.database.windows.net;Initial Catalog=TermDB;User ID=browseradmin;Password=Admin123");
-            conn.Open();
-
-            using (SqlCommand command = new SqlCommand("Select Path from Terms where Value='" + value + "'", conn))
+            //var json = JsonParse.FromJson(new WebClient().DownloadString("http://localhost:7303/api/Terms/1"));
+            //var json = JsonParse.FromJson("{\"Id\":16,\"Value\":\"rain\",\"Path\":\"C:/ Users / Borja / Desktop / Browser / Browser / Docs\",\"Time\":\"11:56:26.5672634\"}]");
+            if (model.Count > 0)
             {
-                using (SqlDataReader reader = command.ExecuteReader())
+                for (int i = 0; i < model.Count; i++)
                 {
-                    while (reader.Read())
-                    {
-                        result.Add(reader.GetString(0));
-                    }
+                    result.Add(model[i].Path);
                 }
-            }
-
-            conn.Close();
-            if (result.Count() > 0)
-            {
                 return result;
             } else
             {
                 result.Add("No results found");
                 return result;
             }
-            conn.Close();
         }
     }
 }
